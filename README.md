@@ -7,7 +7,7 @@ Sort a string array based on the included numbers naturally.
 Via Composer
 
 ``` bash
-$ composer require Awssat/numberedStringOrder
+$ composer require awssat/numbered-string-order
 ```
 
 ## Usage
