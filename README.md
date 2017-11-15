@@ -19,10 +19,30 @@ $numberedStringOrder = new numberedStringOrder();
 var_dump($numberedStringOrder->sort(['2digits', 'text1', 'three3', 'blank']));
 ```
 
-It can fetch arabic numbers too :
+It can sort Arabic & English numbers too :
 ``` php
 $numberedStringOrder = new numberedStringOrder();
-var_dump($numberedStringOrder->sort(['حلقة 30',
+var_dump(
+
+   $numberedStringOrder->sort([
+        'episode 5',
+        'episode50',
+        '499',
+        'episode1',
+        'episode two hundred',
+        'episode one',
+        'episode two',
+        'episode eleven',
+        'episode three'
+    ])
+    
+);
+
+
+var_dump(
+
+   $numberedStringOrder->sort([
+        'حلقة 30',
         'حلقة33',
         'حلقة3٤',
         'حلقة ٥٥ ',
@@ -34,7 +54,10 @@ var_dump($numberedStringOrder->sort(['حلقة 30',
         'حلقة ثلاثة جديدة',
         'حلقة واحد جديدة',
         'حلقتنا اليوم 1',
-        'حلقة الاخيرة',]));
+        'حلقة الاخيرة',
+    ])
+    
+);
 ```
 
 #### Get the numbers
