@@ -9,13 +9,12 @@ class numberedStringOrderTest extends TestCase
 {
     /** @var Awssat\numberedStringOrder\numberedStringOrder */
     protected $numberedStringOrder;
-    
+
     protected function setUp()
     {
-        $this->numberedStringOrder = new numberedStringOrder;
+        $this->numberedStringOrder = new numberedStringOrder();
     }
-    
-    
+
     /** @test */
     public function it_keeps_same_input_count()
     {
@@ -25,10 +24,10 @@ class numberedStringOrderTest extends TestCase
             'حلقة 2',
             'billion new',
         ]);
-         
+
         $this->assertCount(4, $orderedArray);
     }
-    
+
     /** @test */
     public function it_sort_english_words_well()
     {
@@ -38,17 +37,17 @@ class numberedStringOrderTest extends TestCase
             'episode 1',
             'episode 20',
         ]);
-         
+
         //last
-        $this->assertEquals('billion new', $orderedArray[count($orderedArray)-1]);
-        
+        $this->assertEquals('billion new', $orderedArray[count($orderedArray) - 1]);
+
         //in middle
         $this->assertEquals('episode 100', $orderedArray[2]);
-        
+
         //first
         $this->assertEquals('episode 1', $orderedArray[0]);
     }
-    
+
     /** @test */
     public function it_sort_arabic_words_well()
     {
@@ -61,13 +60,13 @@ class numberedStringOrderTest extends TestCase
             '١٠٠',
             '١',
         ]);
-         
+
         //last
-        $this->assertEquals('30 مليار', $orderedArray[count($orderedArray)-1]);
-        
+        $this->assertEquals('30 مليار', $orderedArray[count($orderedArray) - 1]);
+
         //in middle
         $this->assertEquals('١٠٠', $orderedArray[2]);
-        
+
         //first
         $this->assertEquals('١', $orderedArray[0]);
     }
