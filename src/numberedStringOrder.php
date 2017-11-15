@@ -4,11 +4,21 @@ namespace Awssat\numberedStringOrder;
 
 class numberedStringOrder
 {
+    /**
+     * Get numbers from strings
+     * @param $array
+     * @return array
+     */
     public function getNumbers($array)
     {
         return $this->compile($array);
     }
 
+    /**
+     * Sort by numbers
+     * @param $array
+     * @return array
+     */
     public function sort($array)
     {
         $result = $this->compile($array);
@@ -17,17 +27,123 @@ class numberedStringOrder
         return array_keys($result);
     }
 
-    private function str2int($str)
+    /**
+     * Words to int
+     * @param $str
+     * @return float|int|mixed
+     */
+    public function str2int($str)
+    {
+        return $this->arabicW2N($str) + $this->englishW2N($str);
+    }
+
+
+    /**
+     * @param $str
+     * @return float|int
+     */
+    private function englishW2N($str)
+    {
+        $numbers = array(
+            'zero' => 0,
+            'one' => 1,
+            'two' => 2,
+            'three' => 3,
+            'four' => 4,
+            'five' => 5,
+            'six' => 6,
+            'seven' => 7,
+            'eight' => 8,
+            'nine' => 9,
+            'ten' => 10,
+            'eleven' => 11,
+            'twelve' => 12,
+            'thirteen' => 13,
+            'fourteen' => 14,
+            'fifteen' => 15,
+            'sixteen' => 16,
+            'seventeen' => 17,
+            'eighteen' => 18,
+            'nineteen' => 19,
+            'twenty' => 20,
+            'thirty' => 30,
+            'forty' => 40,
+            'fourty' => 40,
+            'fifty' => 50,
+            'sixty' => 60,
+            'seventy' => 70,
+            'eighty' => 80,
+            'ninety' => 90,
+            'hundred' => 100,
+            'thousand' => 1000,
+            'million' => 1000000,
+            'billion' => 1000000000);
+
+        $str = preg_replace("/[^a-zA-Z]+/", " ", $str);
+        $words = explode(" ", $str);
+        $total = 0;
+        $force_addition = false;
+        $last_digit = null;
+        $final_sum = array();
+
+        foreach ($words as $word) {
+
+            if (!isset($numbers[$word]) && $word != "and") {
+                continue;
+            }
+
+            $word = strtolower($word);
+
+            if ($word == "and") {
+                if ($last_digit === null) {
+                    $total = 0;
+                }
+                $force_addition = true;
+            } else {
+                if ($force_addition) {
+                    $total += $numbers[$word];
+                    $force_addition = false;
+                } else {
+                    if ($last_digit !== null && $last_digit > $numbers[$word]) {
+                        $total += $numbers[$word];
+                    } else {
+                        if ($total == 0) {
+                            $total = $numbers[$word];
+                        } else {
+                            $total *= $numbers[$word];
+                        }
+
+                    }
+                }
+                $last_digit = $numbers[$word];
+
+                if ($numbers[$word] >= 1000) {
+                    $final_sum[] = $total;
+                    $last_digit = null;
+                    $force_addition = false;
+                    $total = 1;
+                }
+            }
+        }
+
+        $final_sum[] = $total;
+        return array_sum($final_sum);
+    }
+
+    /**
+     * @param $str
+     * @return int|mixed
+     */
+    private function arabicW2N($str)
     {
         // Normalization phase
         $str = str_replace(['أ', 'إ', 'آ'], 'ا', $str);
-        $str = str_replace('ه', '', $str);
-        $str = str_replace('ة', '', $str);
+        $str = str_replace('ه', 'ة', $str);
         $str = preg_replace('/\s+/', ' ', $str);
-        $str = str_replace(['ـ', 'َ', 'ً', 'ُ', 'ٌ', 'ِ', 'ٍ', 'ْ', 'ّ'], '', $str);
+        $str = str_replace(['ـ', 'َ', 'ً', 'ُ', 'ٌ', 'ِ', 'ٍ', 'ْ', 'ّ', 'ال'], '', $str);
         $str = str_replace('مائة', 'مئة', $str);
         $str = str_replace(['احدى', 'احد'], 'واحد', $str);
-        $str = str_replace(['اثنا', 'اثني', 'اثنتا', 'اثنتي'], 'اثنان', $str);
+        $str = str_replace(['اثنا ', 'اثني ', ' اثنتا ', 'اثنتي '], 'اثنان', $str);
         $str = trim($str);
 
 
@@ -36,12 +152,19 @@ class numberedStringOrder
             'واحدة' => 1,
             'اثنان' => 2,
             'اولى' => 1,
+            'ثانية' => 2,
             'ثاني' => 2,
-            'ثالث' => 4,
+            'ثالثة' => 3,
+            'ثالث' => 3,
+            'خامسة' => 5,
             'خامس' => 5,
+            'سادسة' => 6,
             'سادس' => 6,
+            'سابعة' => 7,
             'سابع' => 7,
+            'ثامنة' => 8,
             'ثامن' => 8,
+            'تاسعة' => 9,
             'تاسع' => 9,
             'عاشر' => 10,
             'اثنين' => 2,
@@ -81,7 +204,6 @@ class numberedStringOrder
             'تسعين' => 90,
             'مئتان' => 200,
             'مئتين' => 200,
-            'مئة' => 100,
             'ثلاثمئة' => 300,
             'اربعمئة' => 400,
             'خمسمئة' => 500,
@@ -89,11 +211,57 @@ class numberedStringOrder
             'سبعمئة' => 700,
             'ثمانمئة' => 800,
             'تسعمئة' => 900,
+
+            'ثلاث مئة' => 300,
+            'اربع مئة' => 400,
+            'خمس مئة' => 500,
+            'ست مئة' => 600,
+            'سبع مئة' => 700,
+            'ثمان مئة' => 800,
+            'تسع مئة' => 900,
+
+            'مئة' => 100,
+            'الف' => 1000,
+            'الفان' => 2000,
+            'مليون' => 1000000,
+            'مليونان' => 2000000,
+            'مليونين' => 2000000,
+            'مليار' => 1000000000,
+            'ملياران' => 2000000000,
+            'مليارين' => 2000000000,
         ];
 
-        // Individual process
+        $complications = [
+            'مليارات' => 1000000000,
+            'مليار' => 1000000000,
+            'ملايين' => 1000000,
+            'مليون' => 1000000,
+            'الاف' => 1000,
+            'الف' => 1000,
+        ];
+
         $total = 0;
-        $str = " $str ";
+
+        foreach ($complications as $complication => $by) {
+
+            if (preg_match("/(.*)\s+{$complication}/", $str, $result) && isset($result[1])) {
+                $result = " {$result[1]} ";
+                foreach ($spell as $word => $value) {
+                    if (strpos($result, "$word ") !== false) {
+                        $str = str_replace("$word ", ' ', $str);
+                        $result = str_replace("$word ", ' ', $result);
+                        $total += $value;
+                    }
+                }
+
+                $str = str_replace(" $complication", ' ', $str);
+                $total *= $by;
+            }
+
+        }
+
+        $str = " {$str} ";
+
         foreach ($spell as $word => $value) {
             if (strpos($str, "$word ") !== false) {
                 $str = str_replace("$word ", ' ', $str);
@@ -104,6 +272,10 @@ class numberedStringOrder
         return $total;
     }
 
+    /**
+     * @param $term
+     * @return string
+     */
     private function split_numbers($term)
     {
         $text = '';
@@ -115,42 +287,24 @@ class numberedStringOrder
         return $text;
     }
 
+    /**
+     * @param $text
+     * @return mixed|null|string|string[]
+     */
     private function normalize_text($text)
     {
-        $text = $this->arabic101($text);
         $text = str_replace(['%', '؛', '،', '<', '>', '«', '»', '|', '[', ']', '؟', '?', '(', ')', '/', '=', '+', '-', '@', '!', '؟', '#', '$', '^', '&', '_', '*', '"', "'", '{', '}', '~', '`', '`', 'ـ', '.'], '', $text);
         $text = str_replace(['١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩', '٠'], ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'], $text);
         $text = preg_replace('!&#x66([0-9]{1});!', '$1', $text);
         $text = $this->split_numbers($text);
-        $text = preg_replace('/^(\s*\x{0627}\x{0644})/u', '', $text);    //if start with alef lam then remove it
-        $text = preg_replace('/(\W+\x{0627}\x{0644})/u', ' ', " " . $text);
         return $text;
     }
 
-    private function unichar($u)
-    {
-        return mb_convert_encoding('&#' . intval($u) . ';', 'UTF-8', 'HTML-ENTITIES');
-    }
 
-    private function arabic101($text)
-    {
-        //tatweel and tshkeel
-        $tashkeel = [$this->unichar(0x0640), $this->unichar(0x064B), $this->unichar(0x064C), $this->unichar(0x064D), $this->unichar(0x064E), $this->unichar(0x064F), $this->unichar(0x0650), $this->unichar(0x0651), $this->unichar(0x0652),];
-        $text = str_replace($tashkeel, "", $text);
-        //hamaza yeh , waw
-        $replace = [$this->unichar(0x0624) => $this->unichar(0x0648), $this->unichar(0x0626) => $this->unichar(0x064a),];
-        //alephs hamaza
-        $alephs = [$this->unichar(0x0622), $this->unichar(0x0623), $this->unichar(0x0625), $this->unichar(0x0654), $this->unichar(0x0655),];
-        $text = str_replace(array_keys($replace), array_values($replace), $text);
-        $text = str_replace($alephs, $this->unichar(0x0627), $text);
-        //Ligatures
-        $text = str_replace($this->unichar(0xFEF7), $this->unichar(0x0644) . $this->unichar(0x064E) . $this->unichar(0x0627), $text);
-        $text = str_replace($this->unichar(0xFEF7), $this->unichar(0x0644) . $this->unichar(0x0623), $text);
-        $text = str_replace($this->unichar(0xFEF9), $this->unichar(0x0644) . $this->unichar(0x0625), $text);
-        $text = str_replace($this->unichar(0xFEF5), $this->unichar(0x064E) . $this->unichar(0x0627), $text);
-        return $text;
-    }
-
+    /**
+     * @param $array
+     * @return array
+     */
     private function compile($array)
     {
         $result = [];
