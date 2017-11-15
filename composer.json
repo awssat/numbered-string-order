@@ -21,7 +21,18 @@
             "Awssat\\numberedStringOrder\\": "src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Awssat\\numberedStringOrder\\Test\\": "tests"
+        }
+    },
     "config": {
         "sort-packages": true
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.4"
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
     }
 }

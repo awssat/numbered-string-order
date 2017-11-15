@@ -1,5 +1,9 @@
 # numberedStringOrder
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/awssat/numbered-string-order.svg?style=flat-square)](https://packagist.org/packages/awssat/numbered-string-order)
+[![StyleCI](https://styleci.io/repos/110764857/shield?branch=master)](https://styleci.io/repos/110764857)
+
+
 Sort a string array based on the included numbers naturally.
 
 ## Install
@@ -65,6 +69,12 @@ var_dump(
 $numberedStringOrder = new numberedStringOrder();
 var_dump($numberedStringOrder->getNumbers(['2digits', 'text1', 'three3', 'blank']));
 ```
+
+## Test
+```bash
+composer test
+```
+
 
 ## License
 
