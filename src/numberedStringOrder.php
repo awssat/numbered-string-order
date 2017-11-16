@@ -36,8 +36,8 @@ class numberedStringOrder
      * Words to numbers.
      *
      * @param string $str
+     * @param bool   $normalized
      *
-     * @param bool $normalized
      * @return int
      */
     public function wordsToNumbers($str, $normalized = false)
@@ -144,14 +144,14 @@ class numberedStringOrder
 
     /**
      * @param string $str
+     * @param bool   $normalized
      *
-     * @param bool $normalized
      * @return int|mixed
      */
     protected function arabicWordsToNumbers($str, $normalized)
     {
         // Normalization phase
-        if(!$normalized) {
+        if (!$normalized) {
             $str = $this->normalizeText($str);
         }
 
@@ -236,8 +236,6 @@ class numberedStringOrder
             'ثمانمئة' => 800,
             'تسعمئة'  => 900,
 
-
-
             'مئة'     => 100,
             'الف'     => 1000,
             'الفان'   => 2000,
@@ -262,7 +260,7 @@ class numberedStringOrder
 
         foreach ($complications as $complication => $by) {
             $subTotal = 0;
-            if (preg_match("/(.*)\s*{$complication}/", $str, $result) !== false  && isset($result[1])) {
+            if (preg_match("/(.*)\s*{$complication}/", $str, $result) !== false && isset($result[1])) {
                 $result = " {$result[1]} ";
 
                 foreach ($spell as $word => $value) {
@@ -334,6 +332,7 @@ class numberedStringOrder
                 $result[$string] = trim($needle);
             } elseif (preg_match('/(\d+)\s+$/', $needle, $num)) {
                 $sort = trim($num[0]);
+
                 $result[$string] = $sort;
             } else {
                 $ar_int = $this->wordsToNumbers($needle, true);
