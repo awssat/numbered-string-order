@@ -37,11 +37,12 @@ class numberedStringOrder
      *
      * @param string $str
      *
+     * @param bool $normalized
      * @return int
      */
-    public function wordsToNumbers($str)
+    public function wordsToNumbers($str, $normalized = false)
     {
-        return (int) $this->arabicWordsToNumbers($str) + (int) $this->englishWordsToNumbers($str);
+        return (int) $this->arabicWordsToNumbers($str, $normalized) + (int) $this->englishWordsToNumbers($str);
     }
 
     /**
@@ -144,21 +145,33 @@ class numberedStringOrder
     /**
      * @param string $str
      *
+     * @param bool $normalized
      * @return int|mixed
      */
-    protected function arabicWordsToNumbers($str)
+    protected function arabicWordsToNumbers($str, $normalized)
     {
         // Normalization phase
+        if(!$normalized) {
+            $str = $this->normalizeText($str);
+        }
+
         $str = str_replace(['أ', 'إ', 'آ'], 'ا', $str);
         $str = str_replace('ه', 'ة', $str);
         $str = str_replace(['ـ', 'َ', 'ً', 'ُ', 'ٌ', 'ِ', 'ٍ', 'ْ', 'ّ'], '', $str);
         $str = str_replace('مائة', 'مئة', $str);
         $str = str_replace(['احدى', 'احد'], 'واحد', $str);
         $str = str_replace(['اثنا ', 'اثني ', ' اثنتا ', 'اثنتي '], 'اثنان', $str);
-        // $str = preg_replace('//', '', $str);
         $str = trim($str);
 
         $spell = [
+            'ثلاث مئة' => 300,
+            'اربع مئة' => 400,
+            'خمس مئة'  => 500,
+            'ست مئة'   => 600,
+            'سبع مئة'  => 700,
+            'ثمان مئة' => 800,
+            'تسع مئة'  => 900,
+
             'واحد'    => 1,
             'واحدة'   => 1,
             'اثنان'   => 2,
@@ -223,13 +236,7 @@ class numberedStringOrder
             'ثمانمئة' => 800,
             'تسعمئة'  => 900,
 
-            'ثلاث مئة' => 300,
-            'اربع مئة' => 400,
-            'خمس مئة'  => 500,
-            'ست مئة'   => 600,
-            'سبع مئة'  => 700,
-            'ثمان مئة' => 800,
-            'تسع مئة'  => 900,
+
 
             'مئة'     => 100,
             'الف'     => 1000,
@@ -254,29 +261,29 @@ class numberedStringOrder
         $total = 0;
 
         foreach ($complications as $complication => $by) {
-            if (preg_match("/(.*)\s*{$complication}/", $str, $result) && isset($result[1])) {
+            $subTotal = 0;
+            if (preg_match("/(.*)\s*{$complication}/", $str, $result) !== false  && isset($result[1])) {
                 $result = " {$result[1]} ";
 
                 foreach ($spell as $word => $value) {
                     if (strpos($result, "$word ") !== false) {
                         $str = str_replace("$word ", ' ', $str);
                         $result = str_replace("$word ", ' ', $result);
-                        $total += $value;
+                        $subTotal += $value;
                     }
                 }
 
                 if (preg_match("/(\d+)/", $result, $numbersInResult) !== false && isset($numbersInResult[1])) {
-                    $total += $numbersInResult[1];
+                    $subTotal += $numbersInResult[1];
+                    $str = str_replace("{$numbersInResult[1]}", ' ', $str);
                 }
 
                 $str = str_replace(" $complication", ' ', $str);
-
-                $total = $total == 0 ? $by : $total * $by;
+                $total += ($total == 0 && $subTotal == 0) ? $by : ($subTotal * $by);
             }
         }
 
         $str = " {$str} ";
-
         foreach ($spell as $word => $value) {
             if (strpos($str, "$word ") !== false) {
                 $str = str_replace("$word ", ' ', $str);
@@ -324,15 +331,15 @@ class numberedStringOrder
             //if not then arabic word
             //if not then get it in lastv
             if (is_numeric(trim($needle))) {
-                $result[$string] = trim($needle);
+                $result[$string] = (int) trim($needle);
             } elseif (preg_match('/(\d+)\s+$/', $needle, $num)) {
-                $sort = trim($num[0]);
+                $sort = (int)  trim($num[0]);
                 $result[$string] = $sort;
             } else {
-                $ar_int = $this->wordsToNumbers($needle);
+                $ar_int = $this->wordsToNumbers($needle, true);
 
                 if ($ar_int != 0) {
-                    $result[$string] = $ar_int;
+                    $result[$string] = (int) $ar_int;
                 } else {
                     $result[$string] = $string;
                 }
