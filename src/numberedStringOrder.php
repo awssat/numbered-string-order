@@ -331,15 +331,15 @@ class numberedStringOrder
             //if not then arabic word
             //if not then get it in lastv
             if (is_numeric(trim($needle))) {
-                $result[$string] = (int) trim($needle);
+                $result[$string] = trim($needle);
             } elseif (preg_match('/(\d+)\s+$/', $needle, $num)) {
-                $sort = (int)  trim($num[0]);
+                $sort = trim($num[0]);
                 $result[$string] = $sort;
             } else {
                 $ar_int = $this->wordsToNumbers($needle, true);
 
                 if ($ar_int != 0) {
-                    $result[$string] = (int) $ar_int;
+                    $result[$string] = $ar_int;
                 } else {
                     $result[$string] = $string;
                 }
