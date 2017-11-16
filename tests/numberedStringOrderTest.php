@@ -18,7 +18,7 @@ class numberedStringOrderTest extends TestCase
     /** @test */
     public function english_words()
     {
-       $orderdArray = $this->numberedStringOrder->sort([
+        $orderdArray = $this->numberedStringOrder->sort([
                 '30 hundreds',
                 '30 millions, 24 thousands, 20 hundreds',
                 '30 millions, 25 thousands, 20 hundreds',
@@ -31,8 +31,6 @@ class numberedStringOrderTest extends TestCase
                 '14 hundreds',
             ]);
 
-
-
         $expected = [
             14,
             20,
@@ -43,9 +41,8 @@ class numberedStringOrderTest extends TestCase
             '30 millions, 24 thousands, 20 hundreds',
             '30 millions, 25 thousands, 20 hundreds',
             '30 millions, 25 thousands, 21 hundreds',
-            '14 billions'
+            '14 billions',
         ];
-
 
         $this->assertEquals($expected, $orderdArray);
     }
@@ -62,11 +59,11 @@ class numberedStringOrderTest extends TestCase
             'episode one',
             'episode two',
             'episode eleven',
-            'episode three'
+            'episode three',
         ]);
 
-        $this->assertEquals(["episode1","episode one","episode two","episode three","episode 5","episode eleven","episode50","episode two hundred",
-        499], $orderedArray);
+        $this->assertEquals(['episode1', 'episode one', 'episode two', 'episode three', 'episode 5', 'episode eleven', 'episode50', 'episode two hundred',
+        499, ], $orderedArray);
 
         $orderedArray = $this->numberedStringOrder->sort([
             'حلقة 30',
@@ -85,8 +82,7 @@ class numberedStringOrderTest extends TestCase
         ]);
 
         $this->assertEquals(
-        ["حلقة واحد جديدة","حلقه الأولى جديدة","حلقتنا اليوم 1","حلقه 2 جديدة", "حلقة الثانية جديدة","حلقة ثلاثة جديدة",4,"episode 24","حلقة 30","حلقة33", "حلقة3٤", "حلقة ٥٥ ", "حلقة الاخيرة"]
-        , $orderedArray);
+        ['حلقة واحد جديدة', 'حلقه الأولى جديدة', 'حلقتنا اليوم 1', 'حلقه 2 جديدة', 'حلقة الثانية جديدة', 'حلقة ثلاثة جديدة', 4, 'episode 24', 'حلقة 30', 'حلقة33', 'حلقة3٤', 'حلقة ٥٥ ', 'حلقة الاخيرة'], $orderedArray);
     }
 
     /** @test */
@@ -145,7 +141,6 @@ class numberedStringOrderTest extends TestCase
         $this->assertEquals('١', $orderedArray[0]);
     }
 
-
     /** @test */
     public function arabic_words()
     {
@@ -168,16 +163,16 @@ class numberedStringOrderTest extends TestCase
 
         $expected =
             [
-                0 => '١',
-                1 => '٢ ',
-                2 => ' 24',
-                3 => '١٠٠',
-                4 => '١٠ ألاف',
-                5 => '٥٥ ألف',
-                6 => '٣ ملايين',
-                7 => '١٠ ملايين و5 ألاف',
-                8 => '١٠ ملايين وتسع مئة ألف',
-                9 => '١٠ ملايين وتسع مئة ألف وخمس مئة',
+                0  => '١',
+                1  => '٢ ',
+                2  => ' 24',
+                3  => '١٠٠',
+                4  => '١٠ ألاف',
+                5  => '٥٥ ألف',
+                6  => '٣ ملايين',
+                7  => '١٠ ملايين و5 ألاف',
+                8  => '١٠ ملايين وتسع مئة ألف',
+                9  => '١٠ ملايين وتسع مئة ألف وخمس مئة',
                 10 => '٣٠ مليون',
                 11 => '4 مليارات',
                 12 => '30 مليار',
