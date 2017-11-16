@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/awssat/numbered-string-order.svg?style=flat-square)](https://packagist.org/packages/awssat/numbered-string-order)
 [![StyleCI](https://styleci.io/repos/110764857/shield?branch=master)](https://styleci.io/repos/110764857)
+[![Build Status](https://img.shields.io/travis/awssat/numberedStringOrder/master.svg?style=flat-square)](https://travis-ci.org/awssat/numberedStringOrder)
 
 
 Sort a string array based on the included numbers naturally.
