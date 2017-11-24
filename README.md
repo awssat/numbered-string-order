@@ -5,7 +5,8 @@
 [![Build Status](https://img.shields.io/travis/awssat/numberedStringOrder/master.svg?style=flat-square)](https://travis-ci.org/awssat/numberedStringOrder)
 
 
-Sort a string array based on the included numbers naturally.
+Sort an array of strings based on the included numbers naturally. An alternative to PHP built-in natsort function that's actually work.
+
 
 ## Install
 
@@ -19,56 +20,125 @@ $ composer require awssat/numbered-string-order
 
 
 #### Sort
+
 ``` php
+//if you are using laravel, then instead use:
+//$numberedStringOrder = app(Awssat\numberedStringOrder\numberedStringOrder::class);
+
 $numberedStringOrder = new numberedStringOrder();
-var_dump($numberedStringOrder->sort(['2digits', 'text1', 'three3', 'blank']));
+
+$numberedStringOrder->sort([
+    'episode 5',
+    'episode50',
+    '499',
+    'episode1',
+    'episode two hundred',
+    'episode one',
+    'episode two',
+    'episode eleven',
+    'episode three'
+]);
+    
+
+>> output: 
+
+[
+     "episode1",
+     "episode one",
+     "episode two",
+     "episode three",
+     "episode 5",
+     "episode eleven",
+     "episode50",
+     "episode two hundred",
+     499,
+   ]
+   
 ```
 
-It can sort Arabic & English numbers too :
+
+
+If you ask why not use the built-in function (natsort), then see the natsort output of the same example above to know why:
+```php
+ //output of built-in function natsor(): :(
+ [
+     "499",
+     "episode1",
+     "episode 5",
+     "episode50",
+     "episode eleven",
+     "episode one",
+     "episode three",
+     "episode two",
+     "episode two hundred",
+   ]
+ ```
+
+
+It supports Arabic too:
+
 ``` php
+//if you are using laravel, then instead use $numberedStringOrder = app(Awssat\numberedStringOrder\numberedStringOrder::class);
 $numberedStringOrder = new numberedStringOrder();
-var_dump(
-
-   $numberedStringOrder->sort([
-        'episode 5',
-        'episode50',
-        '499',
-        'episode1',
-        'episode two hundred',
-        'episode one',
-        'episode two',
-        'episode eleven',
-        'episode three'
-    ])
-    
-);
 
 
-var_dump(
+$numberedStringOrder->sort([
+    'حلقة 30',
+    'حلقة33',
+    'حلقة3٤',
+    'حلقة ٥٥ ',
+    'حلقه 2 جديدة',
+    'حلقه الأولى جديدة',
+    'حلقة الثانية جديدة',
+    'episode 24',
+    '4',
+    'حلقة ثلاثة جديدة',
+    'حلقة واحد جديدة',
+    'حلقتنا اليوم 1',
+    'حلقة الاخيرة',
+]);
 
-   $numberedStringOrder->sort([
-        'حلقة 30',
-        'حلقة33',
-        'حلقة3٤',
-        'حلقة ٥٥ ',
-        'حلقه 2 جديدة',
-        'حلقه الأولى جديدة',
-        'حلقة الثانية جديدة',
-        'episode 24',
-        '4',
-        'حلقة ثلاثة جديدة',
-        'حلقة واحد جديدة',
-        'حلقتنا اليوم 1',
-        'حلقة الاخيرة',
-    ])
-    
-);
+
+>> output:
+
+[
+     "حلقة واحد جديدة",
+     "حلقه الأولى جديدة",
+     "حلقتنا اليوم 1",
+     "حلقه 2 جديدة",
+     "حلقة الثانية جديدة",
+     "حلقة ثلاثة جديدة",
+     4,
+     "episode 24",
+     "حلقة 30",
+     "حلقة33",
+     "حلقة3٤",
+     "حلقة ٥٥ ",
+     "حلقة الاخيرة",
+   ]
+
 ```
+
+
+
+Currently, it supports English and Arabic.
+
+
 
 #### Get the numbers
+If you want to use our internal numbers extracting method
+
 ``` php
-$numberedStringOrder = new numberedStringOrder();
-var_dump($numberedStringOrder->getNumbers(['2digits', 'text1', 'three3', 'blank']));
+$numberedStringOrder->getNumbers(['2digits', 'text1', 'three3', 'two cars', 'blank']);
+
+>> output:
+[
+     "2digits" => 2,
+     "text1" => "1",
+     "three3" => "3",
+     "two cars" => 2,
+     "blank" => "blank",
+   ]
 ```
 
 ## Test
