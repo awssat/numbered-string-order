@@ -2,8 +2,8 @@
 
 namespace Awssat\numberedStringOrder\Test;
 
-use PHPUnit\Framework\TestCase;
 use Awssat\numberedStringOrder\numberedStringOrder;
+use PHPUnit\Framework\TestCase;
 
 class numberedStringOrderTest extends TestCase
 {
@@ -172,16 +172,16 @@ class numberedStringOrderTest extends TestCase
 
         $expected =
             [
-                0 => '١',
-                1 => '٢ ',
-                2 => ' 24',
-                3 => '١٠٠',
-                4 => '١٠ ألاف',
-                5 => '٥٥ ألف',
-                6 => '٣ ملايين',
-                7 => '١٠ ملايين و5 ألاف',
-                8 => '١٠ ملايين وتسع مئة ألف',
-                9 => '١٠ ملايين وتسع مئة ألف وخمس مئة',
+                0  => '١',
+                1  => '٢ ',
+                2  => ' 24',
+                3  => '١٠٠',
+                4  => '١٠ ألاف',
+                5  => '٥٥ ألف',
+                6  => '٣ ملايين',
+                7  => '١٠ ملايين و5 ألاف',
+                8  => '١٠ ملايين وتسع مئة ألف',
+                9  => '١٠ ملايين وتسع مئة ألف وخمس مئة',
                 10 => '٣٠ مليون',
                 11 => '4 مليارات',
                 12 => '30 مليار',

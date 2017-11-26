@@ -92,7 +92,6 @@ class numberedStringOrder
             'billions'  => 1000000000,
         ];
 
-        
         //TwoLines => Two Lines
         $str = preg_replace('/([a-z])([A-Z])/s', '$1 $2', $str);
 
@@ -106,7 +105,7 @@ class numberedStringOrder
         foreach ($words as $word) {
             $word = strtolower(trim($word));
 
-            if (! isset($numbers[$word]) && $word != 'and') {
+            if (!isset($numbers[$word]) && $word != 'and') {
                 continue;
             }
 
@@ -155,7 +154,7 @@ class numberedStringOrder
     protected function arabicWordsToNumbers($str, $normalized)
     {
         // Normalization phase
-        if (! $normalized) {
+        if (!$normalized) {
             $str = $this->normalizeText($str);
         }
 
