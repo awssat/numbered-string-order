@@ -2,8 +2,8 @@
 
 namespace Awssat\numberedStringOrder\Test;
 
-use Awssat\numberedStringOrder\numberedStringOrder;
 use PHPUnit\Framework\TestCase;
+use Awssat\numberedStringOrder\numberedStringOrder;
 
 class numberedStringOrderTest extends TestCase
 {
@@ -82,7 +82,9 @@ class numberedStringOrderTest extends TestCase
         ]);
 
         $this->assertEquals(
-        ['حلقة واحد جديدة', 'حلقه الأولى جديدة', 'حلقتنا اليوم 1', 'حلقه 2 جديدة', 'حلقة الثانية جديدة', 'حلقة ثلاثة جديدة', 4, 'episode 24', 'حلقة 30', 'حلقة33', 'حلقة3٤', 'حلقة ٥٥ ', 'حلقة الاخيرة'], $orderedArray);
+            ['حلقة واحد جديدة', 'حلقه الأولى جديدة', 'حلقتنا اليوم 1', 'حلقه 2 جديدة', 'حلقة الثانية جديدة', 'حلقة ثلاثة جديدة', 4, 'episode 24', 'حلقة 30', 'حلقة33', 'حلقة3٤', 'حلقة ٥٥ ', 'حلقة الاخيرة'],
+            $orderedArray
+        );
     }
 
     /** @test */
@@ -105,6 +107,8 @@ class numberedStringOrderTest extends TestCase
             'episode 100',
             'billion new',
             'episode 1',
+            'episodeTwo',
+            'thirtyOne',
             'episode 20',
         ]);
 
@@ -112,10 +116,15 @@ class numberedStringOrderTest extends TestCase
         $this->assertEquals('billion new', $orderedArray[count($orderedArray) - 1]);
 
         //in middle
-        $this->assertEquals('episode 100', $orderedArray[2]);
+        $this->assertEquals('episode 100', $orderedArray[4]);
+        $this->assertEquals('thirtyOne', $orderedArray[3]);
+        $this->assertEquals('episode 20', $orderedArray[2]);
 
         //first
         $this->assertEquals('episode 1', $orderedArray[0]);
+
+        //second
+        $this->assertEquals('episodeTwo', $orderedArray[1]);
     }
 
     /** @test */
@@ -163,16 +172,16 @@ class numberedStringOrderTest extends TestCase
 
         $expected =
             [
-                0  => '١',
-                1  => '٢ ',
-                2  => ' 24',
-                3  => '١٠٠',
-                4  => '١٠ ألاف',
-                5  => '٥٥ ألف',
-                6  => '٣ ملايين',
-                7  => '١٠ ملايين و5 ألاف',
-                8  => '١٠ ملايين وتسع مئة ألف',
-                9  => '١٠ ملايين وتسع مئة ألف وخمس مئة',
+                0 => '١',
+                1 => '٢ ',
+                2 => ' 24',
+                3 => '١٠٠',
+                4 => '١٠ ألاف',
+                5 => '٥٥ ألف',
+                6 => '٣ ملايين',
+                7 => '١٠ ملايين و5 ألاف',
+                8 => '١٠ ملايين وتسع مئة ألف',
+                9 => '١٠ ملايين وتسع مئة ألف وخمس مئة',
                 10 => '٣٠ مليون',
                 11 => '4 مليارات',
                 12 => '30 مليار',
