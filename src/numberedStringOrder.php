@@ -151,7 +151,7 @@ class numberedStringOrder
      *
      * @return int|mixed
      */
-    protected function arabicWordsToNumbers($str, $normalized)
+    public function arabicWordsToNumbers($str, $normalized)
     {
         // Normalization phase
         if (!$normalized) {
@@ -263,12 +263,11 @@ class numberedStringOrder
 
         foreach ($complications as $complication => $by) {
             $subTotal = 0;
-            if (preg_match("/(.*)\s*{$complication}/", $str, $result) !== false && isset($result[1])) {
-                $result = " {$result[1]} ";
+            if (preg_match("/((.*)\s*{$complication})/", $str, $result) !== false && isset($result[1])) {
+                $result = " {$result[2]} ";
 
                 foreach ($spell as $word => $value) {
                     if (strpos($result, "$word ") !== false) {
-                        $str = str_replace("$word ", ' ', $str);
                         $result = str_replace("$word ", ' ', $result);
                         $subTotal += $value;
                     }
@@ -276,10 +275,11 @@ class numberedStringOrder
 
                 if (preg_match("/(\d+)/", $result, $numbersInResult) !== false && isset($numbersInResult[1])) {
                     $subTotal += $numbersInResult[1];
-                    $str = str_replace("{$numbersInResult[1]}", ' ', $str);
+                    $result = str_replace("{$numbersInResult[1]}", ' ', $result);
                 }
 
-                $str = str_replace(" $complication", ' ', $str);
+                $str = preg_replace("/(.*\s*{$complication})/", $result, $str);
+
                 $total += ($total == 0 && $subTotal == 0) ? $by : ($subTotal * $by);
             }
         }
