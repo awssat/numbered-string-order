@@ -50,7 +50,7 @@ class numberedStringOrder
      *
      * @return float|int
      */
-    protected function englishWordsToNumbers($str)
+    public function englishWordsToNumbers($str)
     {
         $numbers = [
             'zero'      => 0,
