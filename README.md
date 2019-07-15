@@ -21,7 +21,7 @@ $ composer require awssat/numbered-string-order
 
 #### Sort
 
-``` php
+```php
 //if you are using laravel, then instead use:
 //$numberedStringOrder = app(Awssat\numberedStringOrder\numberedStringOrder::class);
 
@@ -41,7 +41,6 @@ $numberedStringOrder->sort([
     
 
 >> output: 
-
 [
      "episode1",
      "episode one",
@@ -52,15 +51,14 @@ $numberedStringOrder->sort([
      "episode50",
      "episode two hundred",
      499,
-   ]
+]
    
 ```
 
 
-
 If you ask why not use the built-in function (natsort), then see the natsort output of the same example above to know why:
 ```php
- //output of built-in function natsor(): :(
+ //output of built-in function natsor(): 🤨
  [
      "499",
      "episode1",
@@ -73,62 +71,12 @@ If you ask why not use the built-in function (natsort), then see the natsort out
      "episode two hundred",
    ]
  ```
-
-
-It supports Arabic too:
-
-``` php
-//if you are using laravel, then instead use $numberedStringOrder = app(Awssat\numberedStringOrder\numberedStringOrder::class);
-$numberedStringOrder = new numberedStringOrder();
-
-
-$numberedStringOrder->sort([
-    'حلقة 30',
-    'حلقة33',
-    'حلقة3٤',
-    'حلقة ٥٥ ',
-    'حلقه 2 جديدة',
-    'حلقه الأولى جديدة',
-    'حلقة الثانية جديدة',
-    'episode 24',
-    '4',
-    'حلقة ثلاثة جديدة',
-    'حلقة واحد جديدة',
-    'حلقتنا اليوم 1',
-    'حلقة الاخيرة',
-]);
-
-
->> output:
-
-[
-     "حلقة واحد جديدة",
-     "حلقه الأولى جديدة",
-     "حلقتنا اليوم 1",
-     "حلقه 2 جديدة",
-     "حلقة الثانية جديدة",
-     "حلقة ثلاثة جديدة",
-     4,
-     "episode 24",
-     "حلقة 30",
-     "حلقة33",
-     "حلقة3٤",
-     "حلقة ٥٥ ",
-     "حلقة الاخيرة",
-   ]
-
-```
-
-
-
-Currently, it supports English and Arabic.
-
-
-
-#### Get the numbers
+ 
+ 
+ #### Get the numbers
 If you want to use our internal numbers extracting method
 
-``` php
+```php
 $numberedStringOrder->getNumbers(['2digits', 'text1', 'three3', 'two cars', 'blank']);
 
 >> output:
@@ -138,13 +86,43 @@ $numberedStringOrder->getNumbers(['2digits', 'text1', 'three3', 'two cars', 'bla
      "three3" => "3",
      "two cars" => 2,
      "blank" => "blank",
-   ]
+]
 ```
+
+
+#### Convert words to numbers 
+This package can also be helpful if you want to convert numerical words to numbers 
+
+```php
+new numberedStringOrder();
+$numberedStringOrder->englishWordsToNumbers('one hundred twenty-three thousand four hundred fifty-six');
+>> output: 123456
+
+//to get arabic words to number use: arabicWordsToNumbers(...)
+
+```
+
+
+
+### Laravel ?
+
+```php
+//if you are using laravel, then instead use $numberedStringOrder = app(Awssat\numberedStringOrder\numberedStringOrder::class);
+$numberedStringOrder = new numberedStringOrder();
+
+```
+
+
+
 
 ## Test
 ```bash
 composer test
 ```
+
+
+
+Currently, it supports English and Arabic.
 
 
 ## License
