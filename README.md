@@ -104,17 +104,6 @@ $numberedStringOrder->englishWordsToNumbers('one hundred twenty-three thousand f
 
 
 
-### Laravel ?
-
-```php
-//if you are using laravel, then instead use $numberedStringOrder = app(Awssat\numberedStringOrder\numberedStringOrder::class);
-$numberedStringOrder = new numberedStringOrder();
-
-```
-
-
-
-
 ## Test
 ```bash
 composer test
